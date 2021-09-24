@@ -19,7 +19,7 @@ object StatusIndicator:
   val charsNotStarted = Seq('➜')
   val charsRunning = Seq('⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷')
   val charsSkipped = Seq('↓')
-  val charsSucceded = Seq('✓')
+  val charsSucceeded = Seq('✓')
   val charsFailed = Seq('✗')
 
   def apply(chars: Seq[Char]) = new StatusIndicator(chars)
@@ -27,13 +27,13 @@ object StatusIndicator:
   def newIndicatorNotStarted() = this(charsNotStarted)
   def newIndicatorRunning() = this(charsRunning)
   def newIndicatorSkipped() = this(charsSkipped)
-  def newIndicatorSucceded() = this(charsSucceded)
+  def newIndicatorSucceeded() = this(charsSucceeded)
   def newIndicatorFailed() = this(charsFailed)
 
   def fromStatus(s: TaskStatus) = s match {
     case TaskStatus.NotStarted => newIndicatorNotStarted()
     case TaskStatus.Running => newIndicatorRunning()
     case TaskStatus.Skipped => newIndicatorSkipped()
-    case TaskStatus.Succeded => newIndicatorSucceded()
+    case TaskStatus.Succeeded => newIndicatorSucceeded()
     case TaskStatus.Failed => newIndicatorFailed()
   }

@@ -6,7 +6,7 @@ import concurrent.ExecutionContext.Implicits.global
 import concurrent.duration.Duration
 
 enum TaskStatus:
-  case NotStarted, Running, Skipped, Succeded, Failed
+  case NotStarted, Running, Skipped, Succeeded, Failed
 
 trait TaskRunner:
   def run(): Unit
@@ -20,23 +20,30 @@ trait TaskRunner:
 @main def test() = {
   println("Starting...")
 
-  val si = StatusIndicator.newIndicatorRunning()
-  for (_ <- 1 to 100) {
-    val i = si.getThenInc()
-    print("\u001b[K\r" + i + " Running...")
-    sleep(100)
-  }
-  val i = si.getThenInc()
-  print("\u001b[K\r" + i + " Running...")
+  val tl = TaskList(Seq(
+    Task("Run A", () => {
+      sleep(1000)
+    }),
+    Task("Then B", () => {
+      sleep(1000)
+    }),
+    Task("End with C", () => {
+      sleep(1000)
+    }),
+  ))
 
-  val res = Future {
-    sleep(1000)
-    println("Hello, world!")
-  }
-  println("\nNot done?")
+  tl.run()
 
-  Await.result(res, Duration.Inf)
-
+//  print("\u001b[31mHello World\u001b[0m\n")
+//  print("a")
+//  sleep(500)
+//  print("\u001B[1A") // Move up a line
+//
+//  print("\u001b[K")  // Clear the line
+////  print("\u001b[0K")  // Clear the line
+////  print("\u001b[1K")  // Clear the line
+////  print("\u001b[2K")  // Clear the line
+//  print("\r")        // Move back to tbe beginning of the line
 
   println("Done.")
 }
