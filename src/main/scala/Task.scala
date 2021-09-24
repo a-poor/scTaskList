@@ -1,14 +1,15 @@
 // package scTaskList
 
 class Task(name: String, action: () => Unit) extends TaskRunner:
-  var status = TaskStatus.NotStarted
-
-  var error: Throwable = null
+  private var status = TaskStatus.NotStarted
+  private var statusIndicator = StatusIndicator.fromStatus(status)
+  private var error: Throwable = null
 
   def getStatus(): TaskStatus = status
 
   def setStatus(s: TaskStatus): Unit = {
     status = s
+    statusIndicator = StatusIndicator.fromStatus(status)
   }
 
   def getError(): Throwable = error
@@ -27,8 +28,15 @@ class Task(name: String, action: () => Unit) extends TaskRunner:
         setError(e)
       }
     }
+  }
 
-
+  def printTask(indent: Int = 0): Unit = {
+    println(" " * indent + statusIndicator.getThenInc() + " " + name)
+  }
+  def clearTask(): Unit = {
+    print("\u001b[1A")
+    print("\u001b[K")
+    print("\r")
   }
 
 object Task
